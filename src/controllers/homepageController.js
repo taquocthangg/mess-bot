@@ -40,7 +40,7 @@ let getWebhook = (req, res) => {
 
 let postWebhook = (req, res) => {
     let body = req.body;
-
+    console.log(body);
     // Checks this is an event from a page subscription
     if (body.object === 'page') {
         // Iterates over each entry - there may be multiple if batched
@@ -66,7 +66,7 @@ let postWebhook = (req, res) => {
 
             // Get the sender PSID
             let sender_psid = webhook_event.sender.id;
-
+            console.log(sender_psid);
             // Check if the event is a message or postback and
             // pass the event to the appropriate handler function
             if (webhook_event.message) {
@@ -87,6 +87,7 @@ let postWebhook = (req, res) => {
 // Handles messages events
 let handleMessage = async (sender_psid, received_message) => {
     //check the incoming message is a quick reply?
+    console.log('received_message', received_message);
     if (received_message && received_message.quick_reply && received_message.quick_reply.payload) {
         let payload = received_message.quick_reply.payload;
         if (payload === "CATEGORIES") {
