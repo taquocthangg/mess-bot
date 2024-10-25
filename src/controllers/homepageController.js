@@ -123,10 +123,11 @@ let getCallback = async (req, res) => {
             },
         });
         const userAccessToken = tokenResponse.data.access_token;
-
+        console.log('userAccessToken', userAccessToken);
         // Lấy page access token
         const pageAccessToken = await getPageAccessToken(userAccessToken);
-        await Token.create({ pageAccessToken }); // Lưu vào MongoDB
+        console.log('pageAccessToken', pageAccessToken);
+        await Token.create({ token: pageAccessToken }); // Lưu vào MongoDB
 
         res.json({ pageAccessToken });
 
