@@ -1,8 +1,7 @@
-// homepageController.js
 require("dotenv").config();
 const axios = require("axios");
-const Token = require("../model/token");
 const chatbotService = require("../services/chatbotService");
+const Token = require("../model/token"); // Mô hình token để lưu trữ page token
 
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
@@ -60,7 +59,7 @@ let postWebhook = (req, res) => {
 // Hàm xử lý tin nhắn
 let handleMessage = async (sender_psid, received_message) => {
     let response;
-console.log(sender_psid);
+
     if (received_message.text) {
         response = { "text": `Bạn đã gửi tin nhắn: "${received_message.text}"` };
     } else if (received_message.attachments) {
@@ -92,7 +91,8 @@ console.log(sender_psid);
         };
     }
 
-    await chatbotService.sendMessage(sender_psid, response);
+    const pageAccessToken = await getPageAccessToken(); // Lấy page_access_token
+    await chatbotService.sendMessage(sender_psid, response, pageAccessToken);
 };
 
 // Hàm xử lý postback
@@ -106,10 +106,11 @@ let handlePostback = async (sender_psid, received_postback) => {
         response = { "text": "Xin lỗi! Hãy gửi lại ảnh khác." };
     }
 
-    await chatbotService.sendMessage(sender_psid, response);
+    const pageAccessToken = await getPageAccessToken(); // Lấy page_access_token
+    await chatbotService.sendMessage(sender_psid, response, pageAccessToken);
 };
 
-// Callback lấy access token của người dùng và lưu vào MongoDB
+// Callback lấy access token của người dùng
 let getCallback = async (req, res) => {
     const code = req.query.code;
     try {
@@ -123,19 +124,41 @@ let getCallback = async (req, res) => {
         });
         const userAccessToken = tokenResponse.data.access_token;
 
-        // Lưu access_token vào MongoDB
-        await Token.create({ token: userAccessToken });
+        // Lấy page access token
+        const pageAccessToken = await getPageAccessToken(userAccessToken);
+        await Token.create({ pageAccessToken }); // Lưu vào MongoDB
 
-        const pagesResponse = await axios.get(`https://graph.facebook.com/v17.0/me/accounts`, {
-            params: { access_token: userAccessToken },
-        });
-        const pages = pagesResponse.data.data;
-
-        res.json(pages);
+        res.json({ pageAccessToken });
 
     } catch (error) {
         console.error('Lỗi khi lấy access token:', error);
         res.status(500).send('Lỗi xác thực');
+    }
+};
+
+// Hàm lấy page access token từ user access token
+const getPageAccessToken = async (userAccessToken) => {
+    if (!userAccessToken) {
+        const tokenDoc = await Token.findOne(); // Lấy page access token từ MongoDB
+        return tokenDoc.pageAccessToken;
+    }
+
+    try {
+        const response = await axios.get('https://graph.facebook.com/me/accounts', {
+            params: {
+                access_token: userAccessToken,
+            },
+        });
+
+        const pages = response.data.data;
+        if (pages.length > 0) {
+            return pages[0].access_token; // Lấy page access token đầu tiên
+        } else {
+            throw new Error("Không tìm thấy trang nào.");
+        }
+    } catch (error) {
+        console.error('Lỗi khi lấy page access token:', error.response.data);
+        throw error;
     }
 };
 
