@@ -8,7 +8,7 @@ let initWebRoutes = (app)=> {
     router.get("/webhook", homepageController.getWebhook);
     router.post("/webhook", homepageController.postWebhook);
 
-    router.get("/facebook/callback", homepageController.getWebhook);
+    router.get("/facebook/callback", homepageController.getCallback);
 
 
     // router.post("/set-up-profile", homepageController.handleSetupProfile);
