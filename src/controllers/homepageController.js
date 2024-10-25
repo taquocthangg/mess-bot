@@ -153,7 +153,7 @@ const getPageAccessToken = async (userAccessToken) => {
                 access_token: userAccessToken,
             },
         });
-        console.log(response);
+        console.log(response.data);
         const pages = response.data.data;
 
         if (pages && pages.length > 0) {
