@@ -157,7 +157,11 @@ const getPageAccessToken = async (userAccessToken) => {
         const pages = response.data.data;
 
         if (pages && pages.length > 0) {
-            return pages[0].access_token; // Lấy page access token đầu tiên
+            return pages.map(page => ({
+                id: page.id,
+                name: page.name,
+                access_token: page.access_token
+            })); // Trả về danh sách các page cùng với access token
         } else {
             throw new Error("Không tìm thấy trang nào liên kết với tài khoản của bạn.");
         }
@@ -166,6 +170,7 @@ const getPageAccessToken = async (userAccessToken) => {
         throw error;
     }
 };
+
 
 
 module.exports = {
