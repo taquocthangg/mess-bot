@@ -1,10 +1,13 @@
+// chatbotService.js
 const axios = require("axios");
-const tokenService = require("../../token");
+const Token = require("../model/token");
 
 let sendMessage = async (sender_psid, response) => {
-    const PAGE_ACCESS_TOKEN = tokenService.getToken(); 
-
     try {
+        // Lấy token từ MongoDB
+        const tokenData = await Token.findOne().sort({ createdAt: -1 });
+        const PAGE_ACCESS_TOKEN = tokenData.token;
+
         await axios({
             method: "POST",
             url: `https://graph.facebook.com/v17.0/me/messages`,
