@@ -140,7 +140,7 @@ let getCallback = async (req, res) => {
 // Hàm lấy page access token từ user access token
 const getPageAccessToken = async (userAccessToken) => {
     if (!userAccessToken) {
-        const tokenDoc = await Token.findOne(); 
+        const tokenDoc = await Token.findOne();
         if (!tokenDoc || !tokenDoc.token) {
             throw new Error("Không tìm thấy page access token trong cơ sở dữ liệu.");
         }
@@ -153,7 +153,7 @@ const getPageAccessToken = async (userAccessToken) => {
                 access_token: userAccessToken,
             },
         });
-
+        console.log(response);
         const pages = response.data.data;
 
         if (pages && pages.length > 0) {
