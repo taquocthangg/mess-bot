@@ -140,8 +140,11 @@ let getCallback = async (req, res) => {
 // Hàm lấy page access token từ user access token
 const getPageAccessToken = async (userAccessToken) => {
     if (!userAccessToken) {
-        const tokenDoc = await Token.findOne(); // Lấy page access token từ MongoDB
-        return tokenDoc.pageAccessToken;
+        const tokenDoc = await Token.findOne(); 
+        if (!tokenDoc || !tokenDoc.token) {
+            throw new Error("Không tìm thấy page access token trong cơ sở dữ liệu.");
+        }
+        return tokenDoc.token;
     }
 
     try {
@@ -152,16 +155,18 @@ const getPageAccessToken = async (userAccessToken) => {
         });
 
         const pages = response.data.data;
-        if (pages.length > 0) {
+
+        if (pages && pages.length > 0) {
             return pages[0].access_token; // Lấy page access token đầu tiên
         } else {
-            throw new Error("Không tìm thấy trang nào.");
+            throw new Error("Không tìm thấy trang nào liên kết với tài khoản của bạn.");
         }
     } catch (error) {
-        console.error('Lỗi khi lấy page access token:', error.response.data);
+        console.error('Lỗi khi lấy page access token:', error.response ? error.response.data : error.message);
         throw error;
     }
 };
+
 
 module.exports = {
     getHomePage,
