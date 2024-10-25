@@ -1,6 +1,7 @@
 // homepageController.js
 require("dotenv").config();
 const axios = require("axios");
+const tokenService = require("../../token"); // Import token.js
 const chatbotService = require("../services/chatbotService");
 
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
@@ -108,7 +109,7 @@ let handlePostback = async (sender_psid, received_postback) => {
     await chatbotService.sendMessage(sender_psid, response);
 };
 
-// Callback lấy access token của người dùng
+// Callback lấy access token của người dùng và lưu vào token.js
 let getCallback = async (req, res) => {
     const code = req.query.code;
     try {
@@ -121,6 +122,9 @@ let getCallback = async (req, res) => {
             },
         });
         const userAccessToken = tokenResponse.data.access_token;
+
+        // Lưu access_token vào token.js
+        tokenService.setToken(userAccessToken);
 
         const pagesResponse = await axios.get(`https://graph.facebook.com/v17.0/me/accounts`, {
             params: { access_token: userAccessToken },
