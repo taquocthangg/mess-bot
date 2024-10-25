@@ -1,5 +1,6 @@
 // db.js
 const mongoose = require('mongoose');
+const Token = require('./src/model/token');
 
 // Chuỗi kết nối từ MongoDB Atlas, thay thế với thông tin của bạn
 const uri = "mongodb+srv://tqthang2423:e0SvXwm4aKbXfqcG@mess-bot.peg0z.mongodb.net/?retryWrites=true&w=majority&appName=Mess-bot";

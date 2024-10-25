@@ -3,9 +3,11 @@ const axios = require("axios");
 const Token = require("../model/token");
 
 let sendMessage = async (sender_psid, response) => {
+    console.log(sender_psid);
     try {
         // Lấy token từ MongoDB
         const tokenData = await Token.findOne().sort({ createdAt: -1 });
+        console.log(tokenData);
         const PAGE_ACCESS_TOKEN = tokenData.token;
 
         await axios({

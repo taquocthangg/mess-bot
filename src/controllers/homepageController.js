@@ -1,7 +1,7 @@
 // homepageController.js
 require("dotenv").config();
 const axios = require("axios");
-const Token = require("../model/token"); // Import token model
+const Token = require("../model/token");
 const chatbotService = require("../services/chatbotService");
 
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
@@ -60,7 +60,7 @@ let postWebhook = (req, res) => {
 // Hàm xử lý tin nhắn
 let handleMessage = async (sender_psid, received_message) => {
     let response;
-
+console.log(sender_psid);
     if (received_message.text) {
         response = { "text": `Bạn đã gửi tin nhắn: "${received_message.text}"` };
     } else if (received_message.attachments) {
