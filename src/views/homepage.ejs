@@ -33,7 +33,7 @@
 
     // Chức năng điều hướng đến OAuth Dialog của Facebook
     function connectToFacebook() {
-        const oauthUrl = `https://www.facebook.com/v17.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=pages_manage_metadata,pages_messaging,pages_read_engagement,pages_show_list`;
+        const oauthUrl = `https://www.facebook.com/v17.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=pages_manage_metadata,pages_messaging,pages_read_engagement,pages_show_list,pages_read_engagement `;
         window.location.href = oauthUrl;
     }
 
