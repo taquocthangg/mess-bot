@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>Chatbot with Messenger</title>
     <meta charset="UTF-8">
@@ -9,42 +8,55 @@
 
     <!-- Bootstrap 4 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 </head>
 
 <body>
 
-    <div class="container">
-        Webcome to FB BOT
-        </div>
-    </div>
+<div class="container text-center mt-5">
+    <h1>Welcome to FB BOT</h1>
+    <p>Nhấp vào nút dưới đây để kết nối chatbot của bạn với Facebook Messenger.</p>
+    
+    <!-- Nút Kết nối với Facebook -->
+    <button class="btn btn-primary" onclick="connectToFacebook()">
+        Kết nối với Facebook
+    </button>
+</div>
 
+<script>
+    // Cài đặt APP_ID và REDIRECT_URI
+    const APP_ID = '1136157421262210';
+    const REDIRECT_URI = 'https://mess-bot-i1x0.onrender.com/facebook/callback';
 
-    <script>
-        window.fbAsyncInit = function() {
-          FB.init({
-            appId      : '{your-app-id}',
-            cookie     : true,
-            xfbml      : true,
-            version    : '{api-version}'
-          });
-            
-          FB.AppEvents.logPageView();   
-            
-        };
-      
-        (function(d, s, id){
-           var js, fjs = d.getElementsByTagName(s)[0];
-           if (d.getElementById(id)) {return;}
-           js = d.createElement(s); js.id = id;
-           js.src = "https://connect.facebook.net/en_US/sdk.js";
-           fjs.parentNode.insertBefore(js, fjs);
-         }(document, 'script', 'facebook-jssdk'));
-      </script>
+    // Chức năng điều hướng đến OAuth Dialog của Facebook
+    function connectToFacebook() {
+        const oauthUrl = `https://www.facebook.com/v17.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=pages_manage_metadata,pages_messaging,pages_read_engagement,pages_show_list`;
+        window.location.href = oauthUrl;
+    }
+
+    // Khởi tạo SDK của Facebook
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId: APP_ID,
+            cookie: true,
+            xfbml: true,
+            version: 'v17.0'
+        });
+        FB.AppEvents.logPageView();
+    };
+
+    // Tải SDK của Facebook
+    (function(d, s, id) {
+        let js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 
 </body>
-
 </html>

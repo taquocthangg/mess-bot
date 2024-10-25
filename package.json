@@ -19,6 +19,7 @@
   "author": "Hary Pham",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.7.7",
     "babel": "^6.23.0",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
