@@ -13,7 +13,7 @@ app.use(session({
     secret: '1234abvcd', // Thay thế YOUR_SESSION_SECRET bằng một chuỗi bí mật
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // Set secure: true nếu bạn đang sử dụng HTTPS
+    cookie: { secure: true } // Set secure: true nếu bạn đang sử dụng HTTPS
 }));
 //config body-parser to post data
 app.use(bodyParser.json());
