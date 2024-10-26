@@ -9,12 +9,7 @@ import session from "express-session";
 require('./controllers/passport'); 
 
 let app = express();
-app.use((req, res, next) => {
-    if (req.headers['x-forwarded-proto'] !== 'https') {
-        return res.redirect(`https://${req.headers.host}${req.url}`);
-    }
-    next();
-});
+
 app.use(session({
     secret: '1234abvcd', // Thay thế YOUR_SESSION_SECRET bằng một chuỗi bí mật
     resave: false,

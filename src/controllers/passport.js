@@ -9,7 +9,7 @@ passport.use(new FacebookStrategy({
     callbackURL: process.env.REDIRECT_URI,
     profileFields: ['id', 'displayName', 'photos', 'email'],
 }, async (accessToken, refreshToken, profile, done) => {
-    console.log('Đăng nhập thành công:', profile);
+    // console.log('Đăng nhập thành công:', profile);
 
     // Lưu access token của người dùng vào profile
     profile.accessToken = accessToken;
@@ -22,15 +22,8 @@ passport.use(new FacebookStrategy({
             },
         });
 
-        const pages = pagesResponse.data.data;
-
-        // Lưu thông tin page access token vào profile
-        profile.pages = pages.map(page => ({
-            pageID: page.id,
-            pageName: page.name,
-            pageAccessToken: page.access_token,
-        }));
-        console.log('profile',profile);
+        
+        console.log('profile',pagesResponse.data.data);
         done(null, profile); // Trả về profile người dùng cùng với thông tin page
     } catch (error) {
         console.error('Lỗi khi lấy page access token:', error);

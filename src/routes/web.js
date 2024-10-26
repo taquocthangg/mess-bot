@@ -10,7 +10,7 @@ let initWebRoutes = (app)=> {
     router.post("/webhook", homepageController.postWebhook);
 
     router.get("/facebook/callback", homepageController.getCallback);
-    router.get('/auth/facebook', passport.authenticate('facebook', {
+    router.get('/auth/facebook', passport.authenticate('facebook', {session: false,
         scope: ['email', 'public_profile', 'pages_show_list', 'pages_read_engagement', 'pages_manage_metadata']
     }));
     router.get('/auth/facebook/callback', 
@@ -19,11 +19,6 @@ let initWebRoutes = (app)=> {
             // Đăng nhập thành công, hiển thị thông tin người dùng và các trang
             res.json({
                 message: 'Đăng nhập thành công!',
-                user: {
-                    name: req.user.displayName,
-                    email: req.user.emails ? req.user.emails[0].value : null,
-                    pages: req.user.pages // Thông tin các trang
-                }
             });
         }
     );
