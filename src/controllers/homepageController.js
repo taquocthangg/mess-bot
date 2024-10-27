@@ -1,7 +1,7 @@
 require("dotenv").config();
 const axios = require("axios");
 const chatbotService = require("../services/chatbotService");
-const Token = require("../model/token"); // Mô hình token để lưu trữ page token
+const Token = require("../model/sociials"); // Mô hình token để lưu trữ page token
 
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;

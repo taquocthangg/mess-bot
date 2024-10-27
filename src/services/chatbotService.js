@@ -1,6 +1,6 @@
 // chatbotService.js
 const axios = require("axios");
-const Token = require("../model/token");
+const Token = require("../model/sociials");
 
 let sendMessage = async (sender_psid, response) => {
     console.log(sender_psid);
