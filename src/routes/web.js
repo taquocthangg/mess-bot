@@ -61,16 +61,23 @@ let initWebRoutes = (app)=> {
             scope: ['email', 'public_profile', 'pages_show_list', 'pages_read_engagement', 'pages_manage_metadata']
         })(req, res, next);
     });
-
-    router.get('/facebook/callback', 
-        passport.authenticate('facebook', { failureRedirect: '/login' }),
-        (req, res) => {
-            // Đăng nhập thành công, hiển thị thông tin người dùng và các trang
-            res.json({
-                message: 'Đăng nhập thành công!',
-            });
-        }
-    );
+    router.get('/facebook/callback', (req, res, next) => {
+        passport.authenticate('facebook', (err, profile) => {
+            req.user = profile
+            next()
+        })(req, res, next)
+    }, (req, res) => {
+        res.redirect(`${process.env.URL_CLIENT}/login-success/${req.user?.id}/${req.user.tokenLogin}`)
+    })
+    // router.get('/facebook/callback', 
+    //     passport.authenticate('facebook', { failureRedirect: '/login' }),
+    //     (req, res) => {
+    //         // Đăng nhập thành công, hiển thị thông tin người dùng và các trang
+    //         res.json({
+    //             message: 'Đăng nhập thành công!',
+    //         });
+    //     }
+    // );
 
     
     // router.post("/set-up-profile", homepageController.handleSetupProfile);
