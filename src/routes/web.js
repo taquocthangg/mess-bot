@@ -64,11 +64,13 @@ let initWebRoutes = (app) => {
     router.get('/facebook/callback', (req, res, next) => {
         passport.authenticate('facebook', (err, profile) => {
             req.user = profile
+            console.log('profile',profile);
             next()
         })(req, res, next)
     }, (req, res) => {
+        console.log('object');
         // res.redirect(`${process.env.URL_CLIENT}/login-success/${req.user?.id}/${req.user.tokenLogin}`)
-        console.log(req);
+        // console.log(req);
     })
     // router.get('/facebook/callback', 
     //     passport.authenticate('facebook', { failureRedirect: '/login' }),
