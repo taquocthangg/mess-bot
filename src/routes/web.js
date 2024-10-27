@@ -67,7 +67,8 @@ let initWebRoutes = (app) => {
             next()
         })(req, res, next)
     }, (req, res) => {
-        res.redirect(`${process.env.URL_CLIENT}/login-success/${req.user?.id}/${req.user.tokenLogin}`)
+        // res.redirect(`${process.env.URL_CLIENT}/login-success/${req.user?.id}/${req.user.tokenLogin}`)
+        console.log(req);
     })
     // router.get('/facebook/callback', 
     //     passport.authenticate('facebook', { failureRedirect: '/login' }),
