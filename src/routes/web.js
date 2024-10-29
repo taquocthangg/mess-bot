@@ -64,6 +64,7 @@ let initWebRoutes = (app) => {
     router.get('/facebook/callback', (req, res, next) => {
         passport.authenticate('facebook', (err, profile) => {
             req.user = profile
+            console.log('err',err);
             console.log('profile',profile);
             next()
         })(req, res, next)
